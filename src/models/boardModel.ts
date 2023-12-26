@@ -1,22 +1,22 @@
 //Column model
 module.exports = (sequelize, DataTypes) => {
-  const Column = sequelize.define(
-    'Column',
+  const Board = sequelize.define(
+    'Board',
     {
-      id: {
-        type: DataTypes.STRING,
-        primaryKey: true,
+      tasks: {
+        type: DataTypes.JSONB,
+        allow_null: false,
       },
-      title: {
-        type: DataTypes.STRING,
+      columns: {
+        type: DataTypes.JSONB,
         allowNull: false,
       },
-      taskIds: {
+      columnOrder: {
         type: DataTypes.ARRAY(DataTypes.STRING),
         defaultValue: [],
-      }
+      },
     },
     { timestamps: true }
   )
-  return Column
+  return Board
 }

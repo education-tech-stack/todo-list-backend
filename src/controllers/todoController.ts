@@ -1,8 +1,22 @@
 import db from '../models'
 
-const User = db.users
-const Task = db.tasks
-const Column = db.columns
+const User = db.User
+const Task = db.Task
+const Column = db.Column
+const Board = db.Board
+
+export async function getBoard(req, res) {
+  let data = await Board.findOne({
+    where: {
+      userId: req.user_id,
+    }
+  })
+  res.send(data || {
+    tasks: {},
+    columns: {},
+    columnOrder: [],
+  })
+}
 
 export function getUsers(req, res) {
   User.findAll().then((users) => {
@@ -10,16 +24,23 @@ export function getUsers(req, res) {
   })
 }
 
-export function getColumns(req, res) {
-  Column.findAll().then((columns) => {
-    res.send(columns)
+export async function saveBoard(req, res) {
+  const board = await Board.findOne({
+    where: {
+      userId: req.user_id,
+    },
   })
-}
-
-export function getTasks(req, res) {
-  Task.findAll().then((tasks) => {
-    res.send(tasks)
-  })
+  board.tasks = req.body.tasks || {}
+  board.columnOrder = req.body.columnOrder || []
+  board.columns = req.body.columns || {}
+  
+  try {
+    await board.save()
+    res.send({ status: 'success' })
+  } catch (e) {
+    console.error('Error saving board:', e)
+    res.status(500).send({ status: 'error', message: 'Internal server error' })
+  }
 }
 
 export function upsertColumn(req, res) {
@@ -44,54 +65,4 @@ export function upsertTask(req, res) {
     .catch((e) => {
       res.status(500).send({ error: e })
     })
-}
-
-export async function getBoard2(req, res) {
-  let data = await Column.findAll({
-    include: [
-      {
-        model: Task,
-        order: [['order', 'ASC']],
-      },
-    ],
-    order: [['order', 'ASC']],
-  })
-  res.send(data)
-}
-
-export async function getBoard(req, res) {
-  let data = await Column.findAll({
-    include: [
-      {
-        model: Task,
-        order: [['order', 'ASC']],
-      },
-    ],
-    order: [['order', 'ASC']],
-  })
-
-  let boardData = {
-    tasks: {},
-    columns: {},
-    columnOrder: [],
-  }
-
-  for (let i = 0; i < data.length; i++) {
-    boardData.columnOrder.push(`column-${data[i].id}`)
-
-    boardData.columns[`column-${data[i].id}`] = data[i].toJSON()
-    const column = boardData.columns[`column-${data[i].id}`]
-    column.id = `column-${column.id}`
-    column.taskIds = []
-    
-    for (let j = 0; j < data[i].tasks.length; j++) {
-      column.taskIds.push(
-        data[i].tasks[j].id
-      )
-      boardData.tasks[data[i].tasks[j].id] = data[i].tasks[j]
-    }
-    delete column.tasks
-  }
-
-  res.send(boardData)
 }

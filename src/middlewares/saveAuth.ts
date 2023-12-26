@@ -1,5 +1,5 @@
 import db from '../models'
-const User = db.users
+const User = db.User
 
 export default async function saveUser(req, res, next) {
   //search the database to see if user exist

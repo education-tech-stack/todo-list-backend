@@ -1,21 +1,16 @@
 //Task model
 module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define(
-    'task',
+    'Task',
     {
       id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING,
         primaryKey: true,
-        autoIncrement: true,
       },
       content: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-			order: {
-				type: DataTypes.INTEGER,
-				allowNull: false,
-			},
     },
     { timestamps: true }
   )

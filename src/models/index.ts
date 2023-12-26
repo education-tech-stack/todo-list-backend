@@ -1,13 +1,12 @@
 import { Sequelize, DataTypes } from 'sequelize'
 
-// const sequelize = new Sequelize(process.env.SEQUELIZE_DATABASE, {
-//   dialect: 'postgres',
-// })
-// const sequelize = new Sequelize('sqlite::memory:')
-const sequelize = new Sequelize({
-  dialect: 'sqlite',
-  storage: './database.sqlite3',
+const sequelize = new Sequelize(process.env.SEQUELIZE_DATABASE, {
+  dialect: 'postgres',
 })
+// const sequelize = new Sequelize({
+//   dialect: 'sqlite',
+//   storage: './database.sqlite3',
+// })
 
 sequelize.authenticate().then(() => {
     console.log(`Database connected to discover`)
@@ -18,12 +17,17 @@ sequelize.authenticate().then(() => {
 const db = {
   Sequelize,
   sequelize,
-  users: require('./userModel')(sequelize, DataTypes),
-  tasks: require('./taskModel')(sequelize, DataTypes),
-  columns: require('./columnModel')(sequelize, DataTypes),
+  User: require('./userModel')(sequelize, DataTypes),
+  Task: require('./taskModel')(sequelize, DataTypes),
+  Column: require('./columnModel')(sequelize, DataTypes),
+  Board: require('./boardModel')(sequelize, DataTypes),
 }
 
-db.users.hasMany(db.columns)
-db.columns.hasMany(db.tasks)
+db.Board.hasMany(db.Task, { foreignKey: 'boardId'})
+db.Task.belongsTo(db.Board, { foreignKey: 'boardId' })
+db.Column.belongsTo(db.Board, { foreignKey: 'boardId' })
+db.Board.hasMany(db.Column, { foreignKey: 'boardId' })
+db.User.hasMany(db.Board, { foreignKey: 'userId' })
+db.Board.belongsTo(db.User, { foreignKey: 'userId' })
 
 export default db;
