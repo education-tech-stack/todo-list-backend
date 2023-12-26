@@ -5,12 +5,12 @@ const usersSeedData = [
   {
     userName: 'user1',
     email: 'user1@gmail.com',
-    password: '$2b$10$PK6yo2RhYIS.DlAWJcgAaOz1N0SoxKp8DgyeaZyp8rYR9pbiaiMCW',
+    password: '$2b$10$o8HL2RuoVXYxugA/Mvy/fuKODMEi3kuHARukZSOvwqbCujpY6oBRO',
   },
   {
     userName: 'user2',
     email: 'user2@gmail.com',
-    password: '$2b$10$5XeV4lRuzMtM4djVZcQAa.sO2TdPbE3uPC3XsuhDYHwB9Jd9zl54m',
+    password: '$2b$10$AwnLKz3rQTpRhr9C0CzWHuFW/.w5tDKxb9JkTPpt5m9QrvWK0V7Xm',
   },
 ]
 
