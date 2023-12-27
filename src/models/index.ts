@@ -3,10 +3,6 @@ import { Sequelize, DataTypes } from 'sequelize'
 const sequelize = new Sequelize(process.env.SEQUELIZE_DATABASE, {
   dialect: 'postgres',
 })
-// const sequelize = new Sequelize({
-//   dialect: 'sqlite',
-//   storage: './database.sqlite3',
-// })
 
 sequelize.authenticate().then(() => {
     console.log(`Database connected to discover`)

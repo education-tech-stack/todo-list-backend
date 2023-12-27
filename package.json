@@ -5,10 +5,11 @@
   "author": "Sameer Chauhan",
   "license": "MIT",
   "scripts": {
-    "start": "node ./dist/app.js",
+    "start": "node dist/app.js",
     "dev": "nodemon",
     "lint": "eslint . --ext .ts",
-    "seed": "ts-node ./src/seed.ts"
+    "seed": "ts-node ./src/seed.ts",
+    "build": "tsc"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
