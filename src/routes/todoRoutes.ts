@@ -10,8 +10,8 @@ import verifyToken from '../middlewares/verifyAuth'
 
 const router = express.Router()
 
-router.get('/users', verifyToken, getUsers)
-router.get('/board', verifyToken, getBoard)
+router.post('/users', verifyToken, getUsers)
+router.post('/board', verifyToken, getBoard)
 
 router.post('/saveBoard', verifyToken, saveBoard)
 router.post('/upsertColumn', verifyToken, upsertColumn)
