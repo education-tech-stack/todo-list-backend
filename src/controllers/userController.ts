@@ -27,7 +27,7 @@ export async function signup(req, res) {
         sameSite: 'none',
       })
       console.log('user', JSON.stringify(user, null, 2))
-      return res.status(201).send({ ...user, access_token: token })
+      return res.status(201).send({ status: "success", "board_page": "/"})
     } else {
       return res.status(409).send('Details are not correct')
     }
@@ -60,10 +60,8 @@ export async function login(req, res) {
           secure: true,
           sameSite: 'none',
         })
-        // console.log("user", JSON.stringify(user, null, 2));
-        // console.log(token);
 
-        return res.status(201).send({ ...user, access_token: token })
+        return res.status(201).send({ status: 'success', board_page: '/' })
       } else {
         return res.status(401).send('Authentication failed')
       }
