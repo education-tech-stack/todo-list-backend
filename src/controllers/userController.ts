@@ -52,6 +52,7 @@ export async function login(req, res) {
         res.cookie('jwt', token, {
           maxAge: 1 * 24 * 60 * 60 * 1000,
           httpOnly: true,
+          sameSite: 'strict',
         })
         // console.log("user", JSON.stringify(user, null, 2));
         // console.log(token);
