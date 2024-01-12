@@ -3,6 +3,7 @@ import db from '../models'
 import jwt from 'jsonwebtoken'
 
 const User = db.User
+const Board = db.Board
 
 export async function signup(req, res) {
   try {
@@ -27,7 +28,13 @@ export async function signup(req, res) {
         sameSite: 'none',
       })
       console.log('user', JSON.stringify(user, null, 2))
-      return res.status(201).send({ status: "success", "board_page": "/"})
+      return res.status(201).send({
+        status: 'success',
+        board_page: '/',
+        id: user.id,
+        userName: user.userName,
+        board_data: [{ tasks: [], columns: [], columnOrder: [] }],
+      })
     } else {
       return res.status(409).send('Details are not correct')
     }
@@ -44,6 +51,7 @@ export async function login(req, res) {
       where: {
         email: email,
       },
+      include: Board,
     })
 
     if (user) {
@@ -61,7 +69,13 @@ export async function login(req, res) {
           sameSite: 'none',
         })
 
-        return res.status(201).send({ status: 'success', board_page: '/' })
+        return res.status(201).send({
+          status: 'success',
+          board_page: '/',
+          id: user.id,
+          userName: user.userName,
+          board_data: user.Boards,
+        })
       } else {
         return res.status(401).send('Authentication failed')
       }
