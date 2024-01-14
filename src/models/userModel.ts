@@ -22,10 +22,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      board_data: {
-        type: DataTypes.JSONB,
-        defaultValue: { tasks: [], columns: [], columnOrder: [] },
-      },
     },
     { timestamps: true }
   )
