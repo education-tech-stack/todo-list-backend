@@ -15,6 +15,13 @@ export async function signup(req, res) {
     }
 
     const user = await User.create(data)
+    const board = await Board.create({
+      userId: user.id,
+      tasks: {},
+      columnOrder: [],
+      columns: {},
+    })
+    user.Boards = [board]
 
     if (user) {
       let token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, {
@@ -33,7 +40,7 @@ export async function signup(req, res) {
         board_page: '/',
         id: user.id,
         userName: user.userName,
-        board_data: [{ tasks: [], columns: [], columnOrder: [] }],
+        board_data: user.Boards,
       })
     } else {
       return res.status(409).send('Details are not correct')
@@ -74,7 +81,10 @@ export async function login(req, res) {
           board_page: '/',
           id: user.id,
           userName: user.userName,
-          board_data: user.Boards,
+          board_data:
+            user.Boards.length === 0
+              ? [{ tasks: [], columns: [], columnOrder: [] }]
+              : user.Boards,
         })
       } else {
         return res.status(401).send('Authentication failed')
